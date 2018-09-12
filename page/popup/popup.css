@@ -1,0 +1,34 @@
+body {
+  min-width: 100px;
+  max-width: 400px;
+  position: relative;
+  vertical-align: middle;
+}
+
+.my-button {
+  width: 100%;
+  border-radius: 0px;
+}
+
+.my-title {
+  text-align: center
+}
+
+.my-bg {
+  background-color: black;
+  color: white
+}
+
+.server {
+  height: 30px;
+  background-color: white;
+  padding: 0px 20px;
+}
+.server-status {
+  float: right;
+  color: green
+}
+
+.my-button-font {
+  margin-right: 10px;
+}
