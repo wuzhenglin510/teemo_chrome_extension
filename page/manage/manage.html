@@ -12,12 +12,39 @@
 </head>
 
 <body>
-    <h1>这里是用例管理中心</h1>
+    <div class="form">
+      
+        <ul class="tab-group">
+          <li id='manageGroups' class="tab active"><a href="#">Group Manage</a></li>
+          <li id="manageScenerios" class="tab"><a href="#">Scenerio Manage</a></li>
+        </ul>
+        <div style="text-align: center">
+            <h3 style="color: white">Welcome To Scenerio Center</h1>
+        </div>
+        
+        
+        <div id="content" class="tab-content">
+          
+            <table id="table-content" class="table-fill">
+                <thead>
+                <tr>
+                <th class="text-left">Description</th>
+                <th class="text-left">Operation</th>
+                </tr>
+                </thead>
+                <tbody id="case-container" class="table-hover">
+                    
+                </tbody>
+                </table>
+        </div>
+        
+  </div> 
 
     <script src="../../thirdpart/bootstrap/jquery-3.3.1.slim.min.js"></script>
     <script src="../../thirdpart/bootstrap/popper.min.js"></script>
     <script src="../../thirdpart/bootstrap/bootstrap.min.js"></script>
     <script src="./manage.js"></script>
+
 </body>
 
 </html>

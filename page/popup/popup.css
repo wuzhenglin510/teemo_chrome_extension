@@ -24,9 +24,14 @@ body {
   background-color: white;
   padding: 0px 20px;
 }
-.server-status {
+.server-status-up {
   float: right;
   color: green
+}
+
+.server-status-down {
+  float: right;
+  color: red
 }
 
 .my-button-font {

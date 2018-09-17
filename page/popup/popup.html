@@ -17,7 +17,9 @@
         <h6>Smart UI Scenerio</h6>
     </div>
     <div class="server">
-        <span class="badge badge-warning">server conn</span><span class="server-status"><span class=" oi oi-wifi"></span></span>
+        <span class="badge badge-warning">server conn</span>
+        <span id="server-status-up" style="display: none" class="server-status-up"><span class="oi oi-wifi"></span></span>
+        <span id="server-status-down" style="display: inline" class="server-status-down"><span class="oi oi-x"></span></span>
     </div>
 
     <div class="row">
@@ -39,7 +41,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <button type="button" style="border-radius: 0px;" class="btn btn-primary my-button">
+            <button id="bt_record_step_scenerio" type="button" style="border-radius: 0px;" class="btn btn-primary my-button">
                 <span class="oi oi-flag my-button-font"></span>
                 record scenario</button>
         </div>
