@@ -1,3 +1,12 @@
+.teemo-action {
+  margin: 10px;
+}
+
+.teemo-action:hover {
+  color: red;
+  border: 1px, solid;
+}
+
 body {
     width: 600px;
     min-height: 100px;

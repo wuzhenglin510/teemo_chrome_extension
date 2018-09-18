@@ -68,9 +68,15 @@ teemoPost('http://localhost:6385/group.manage', {}).then(result => {
             td1.innerText = group.scenerioName;
             tr.appendChild(td1);
             let td2 = document.createElement("td");
-            td2.className = 'text-left';
-            td2.innerText = 'run';
-            td2.onclick = function () { runGroup(group.scenerioName)};
+            td2.className = 'text-center';
+            let sp1 = document.createElement("span");
+            sp1.className = "oi oi-timer teemo-action";
+            sp1.onclick = function () { runGroup(group.scenerioName)};
+            td2.appendChild(sp1);
+            let sp2 = document.createElement("span");
+            sp2.className = "oi oi-cog teemo-action";
+            sp2.onclick = function () { modify(group.scenerioName, 'group')};
+            td2.appendChild(sp2);
             tr.appendChild(td2);
             document.getElementById("case-container").appendChild(tr)
         }
@@ -88,9 +94,15 @@ document.getElementById("manageGroups").onclick = function () {
             td1.innerText = group.scenerioName;
             tr.appendChild(td1);
             let td2 = document.createElement("td");
-            td2.className = 'text-left';
-            td2.innerText = 'run';
-            td2.onclick = function () { runGroup(group.scenerioName)};
+            td2.className = 'text-center';
+            let sp1 = document.createElement("span");
+            sp1.className = "oi oi-timer teemo-action";
+            sp1.onclick = function () { runGroup(group.scenerioName)};
+            td2.appendChild(sp1);
+            let sp2 = document.createElement("span");
+            sp2.className = "oi oi-cog teemo-action";
+            sp2.onclick = function () { modify(group.scenerioName, 'group')};
+            td2.appendChild(sp2);
             tr.appendChild(td2);
             document.getElementById("case-container").appendChild(tr)
         }
@@ -121,13 +133,67 @@ document.getElementById("manageScenerios").onclick =  function () {
             td1.innerText = scenerio.scenerioName;
             tr.appendChild(td1);
             let td2 = document.createElement("td");
-            td2.className = 'text-left';
-            td2.innerText = 'run';
-            td2.onclick = function () {
-                runScenerio(scenerio.scenerioName);
-            } 
+            td2.className = 'text-center';
+            let sp1 = document.createElement("span");
+            sp1.className = "oi oi-timer teemo-action";
+            sp1.onclick = function () { runScenerio(scenerio.scenerioName)};
+            td2.appendChild(sp1);
+            let sp2 = document.createElement("span");
+            sp2.className = "oi oi-cog teemo-action";
+            sp2.onclick = function () { modify(scenerio.scenerioName, 'scenerio')};
+            td2.appendChild(sp2);
             tr.appendChild(td2);
             document.getElementById("case-container").appendChild(tr)
         }
     })
 }
+
+
+function modify (scenerioName, type) {
+    console.log(`modify ${scenerioName} ${type}`)
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function (tabs) {
+        teemoPost(`http://localhost:6385/${type}.get`, {scenerioName}).then(result => {
+            chrome.tabs.executeScript(tabs[0].id, {
+                code: `window.location.href="${result.steps[0].url}";`
+                // code: `window.open("${result.steps[0].url}");`
+            })
+            setTimeout(() => {
+                chrome.tabs.executeScript(
+                    tabs[0].id, {
+                        code: `
+                           var teemoUpdateEnv = document.createElement('div');
+                           teemoUpdateEnv.style="display:none";
+                           teemoUpdateEnv.id = "teemoUpdateEnv";
+                           teemoUpdateEnv.innerText = '${scenerioName}';
+                           document.body.appendChild(teemoUpdateEnv);
+
+                            var teemo_inject_xpath = document.createElement('script');
+                            teemo_inject_xpath.src = 'http://localhost:6385/teemo_inject_xpath.js'
+                            document.body.appendChild(teemo_inject_xpath);
+    
+                            var teemo_inject_common_script = document.createElement('script');
+                            teemo_inject_common_script.src = 'http://localhost:6385/teemo_inject_common_js.js'
+                            document.body.appendChild(teemo_inject_common_script);
+    
+                            setTimeout(function () {
+                                var teemo_inject_${type}_script = document.createElement('script');
+                                teemo_inject_${type}_script.src = 'http://localhost:6385/teemo_inject_${type}_update_js.js'
+                                document.body.appendChild(teemo_inject_${type}_script);
+                            }, 500)
+                            
+                            var teemo_inject_link = document.createElement('link');
+                            teemo_inject_link.type = "text/css";
+                            teemo_inject_link.rel = "stylesheet";
+                            teemo_inject_link.href = 'http://localhost:6385/teemo_inject_css.css'
+                            document.getElementsByTagName( "head" )[0].appendChild( teemo_inject_link );
+
+                            `
+                    });
+            }, 2000)
+
+        })       
+    });
+};
