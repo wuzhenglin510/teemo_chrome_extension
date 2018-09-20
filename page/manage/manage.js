@@ -1,6 +1,7 @@
 var caseType = "group";
 var search = "";
 var cases = [];
+var browser = "Chrome"
 
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
@@ -96,6 +97,10 @@ teemoPost('http://localhost:6385/group.manage', {}).then(result => {
     }
 })
 
+document.getElementById("teemo-choose-browser").onchange = function (event) {
+    browser = event.target.value;
+}
+
 
 document.getElementById("teemo-case-search").oninput = function (event) {
     search = event.target.value;
@@ -122,15 +127,16 @@ document.getElementById("teemo-case-search").oninput = function (event) {
                 sp2.onclick = function () {
                     modify(icase.scenerioName, 'group')
                 };
+                td2.appendChild(sp2);
             } else {
                 sp1.onclick = function () {
-                    runScenerio(scenerio.scenerioName)
+                    runScenerio(icase.scenerioName)
                 };
                 td2.appendChild(sp1);
                 let sp2 = document.createElement("span");
                 sp2.className = "oi oi-cog teemo-action";
                 sp2.onclick = function () {
-                    modify(scenerio.scenerioName, 'scenerio')
+                    modify(icase.scenerioName, 'scenerio')
                 };
                 td2.appendChild(sp2);
             }
@@ -177,6 +183,7 @@ document.getElementById("run-all-silence").onclick = function () {
     if (caseType == "scenerio") {
         teemoPost('http://localhost:6385/group.run', {
             scenerioName: search,
+            browser: browser,
             runAll: true,
             silence: true
         }).then(result => {
@@ -185,6 +192,7 @@ document.getElementById("run-all-silence").onclick = function () {
     } else {
         teemoPost('http://localhost:6385/group.run', {
             scenerioName: search,
+            browser: browser,
             runAll: true,
             silence: true
         }).then(result => {
@@ -218,7 +226,8 @@ document.getElementById("run-all-alert").onclick = function () {
 
 function runGroup(scenerioName) {
     teemoPost('http://localhost:6385/group.run', {
-        scenerioName: scenerioName
+        scenerioName: scenerioName,
+        browser: browser
     }).then(result => {
         alert(`success append test task, please wait!`)
     })
@@ -226,7 +235,8 @@ function runGroup(scenerioName) {
 
 function runScenerio(scenerioName) {
     teemoPost('http://localhost:6385/scenerio.run', {
-        scenerioName: scenerioName
+        scenerioName: scenerioName,
+        browser: browser
     }).then(result => {
         alert(`success append test task, please wait!`)
     })

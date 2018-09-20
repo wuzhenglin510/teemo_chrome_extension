@@ -19,6 +19,13 @@
   height: 30px;
 }
 
+.teemo-choose-browser {
+  float: right;
+  position: absolute;
+  right: 5px;
+  top: 66px;
+}
+
 body {
     width: 600px;
     min-height: 100px;
