@@ -7,6 +7,18 @@
   border: 1px, solid;
 }
 
+.teemo-action:active {
+  color: green
+}
+
+.teemo-case-search {
+  width: 250px;
+  display: inline-block;
+  border-radius: 100px;
+  margin-left: 10px;
+  height: 30px;
+}
+
 body {
     width: 600px;
     min-height: 100px;
@@ -329,4 +341,17 @@ td.text-center {
 
 td.text-right {
 	text-align: right;
+}
+
+.run-all {
+  font-size: 20px;
+  margin: 10px;   
+}
+
+.run-all:hover {
+  color: red
+}
+
+.run-all:active {
+  color: green
 }

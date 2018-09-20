@@ -1,53 +1,62 @@
+var caseType = "group";
+var search = "";
+var cases = [];
+
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
-  
-    var $this = $(this),
-        label = $this.prev('label');
-  
+
+    try {
+        var $this = $(this),
+            label = $this.prev('label');
+
         if (e.type === 'keyup') {
-              if ($this.val() === '') {
-            label.removeClass('active highlight');
-          } else {
-            label.addClass('active highlight');
-          }
-      } else if (e.type === 'blur') {
-          if( $this.val() === '' ) {
-              label.removeClass('active highlight'); 
-              } else {
-              label.removeClass('highlight');   
-              }   
-      } else if (e.type === 'focus') {
-        
-        if( $this.val() === '' ) {
-              label.removeClass('highlight'); 
-              } 
-        else if( $this.val() !== '' ) {
-              label.addClass('highlight');
-              }
-      }
-  
-  });
-  
-  $('.tab a').on('click', function (e) {
-    
-    e.preventDefault();
-    
-    $(this).parent().addClass('active');
-    $(this).parent().siblings().removeClass('active');
-    
-    target = $(this).attr('href');
-  
-    $('.tab-content > div').not(target).hide();
-    
-    $(target).fadeIn(600);
-    
-  });
+            if ($this.val() === '') {
+                label.removeClass('active highlight');
+            } else {
+                label.addClass('active highlight');
+            }
+        } else if (e.type === 'blur') {
+            if ($this.val() === '') {
+                label.removeClass('active highlight');
+            } else {
+                label.removeClass('highlight');
+            }
+        } else if (e.type === 'focus') {
+
+            if ($this.val() === '') {
+                label.removeClass('highlight');
+            } else if ($this.val() !== '') {
+                label.addClass('highlight');
+            }
+        }
+    } catch (err) {
+
+    }
+});
+
+$('.tab a').on('click', function (e) {
+
+    try {
+        e.preventDefault();
+
+        $(this).parent().addClass('active');
+        $(this).parent().siblings().removeClass('active');
+
+        target = $(this).attr('href');
+
+        $('.tab-content > div').not(target).hide();
+
+        $(target).fadeIn(600);
+    } catch (err) {
+
+    }
+});
 
 function teemoPost(uri, data) {
     return new Promise(resolve => {
         let xhr = new XMLHttpRequest();
         xhr.open("POST", uri, true);
         xhr.setRequestHeader('content-type', 'application/json');
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 let result = JSON.parse(xhr.responseText);
                 resolve(result);
@@ -58,35 +67,86 @@ function teemoPost(uri, data) {
 }
 
 teemoPost('http://localhost:6385/group.manage', {}).then(result => {
-        console.log(result)
-        document.getElementById("case-container").innerHTML = "";
-        for (let group of result.groups) {
+    caseType = "group";
+    cases = result.groups;
+    document.getElementById("case-container").innerHTML = "";
+    for (let group of cases) {
+        let tr = document.createElement("tr");
+        tr.className = "text-left";
+        let td1 = document.createElement("td");
+        td1.className = 'text-left';
+        td1.innerText = group.scenerioName;
+        tr.appendChild(td1);
+        let td2 = document.createElement("td");
+        td2.className = 'text-center';
+        let sp1 = document.createElement("span");
+        sp1.className = "oi oi-timer teemo-action";
+        sp1.onclick = function () {
+            runGroup(group.scenerioName)
+        };
+        td2.appendChild(sp1);
+        let sp2 = document.createElement("span");
+        sp2.className = "oi oi-cog teemo-action";
+        sp2.onclick = function () {
+            modify(group.scenerioName, 'group')
+        };
+        td2.appendChild(sp2);
+        tr.appendChild(td2);
+        document.getElementById("case-container").appendChild(tr)
+    }
+})
+
+
+document.getElementById("teemo-case-search").oninput = function (event) {
+    search = event.target.value;
+    document.getElementById("case-container").innerHTML = "";
+    for (let icase of cases) {
+        if (icase.scenerioName.indexOf(search) != -1) {
             let tr = document.createElement("tr");
             tr.className = "text-left";
             let td1 = document.createElement("td");
             td1.className = 'text-left';
-            td1.innerText = group.scenerioName;
+            td1.innerText = icase.scenerioName;
             tr.appendChild(td1);
             let td2 = document.createElement("td");
             td2.className = 'text-center';
             let sp1 = document.createElement("span");
             sp1.className = "oi oi-timer teemo-action";
-            sp1.onclick = function () { runGroup(group.scenerioName)};
-            td2.appendChild(sp1);
-            let sp2 = document.createElement("span");
-            sp2.className = "oi oi-cog teemo-action";
-            sp2.onclick = function () { modify(group.scenerioName, 'group')};
-            td2.appendChild(sp2);
+            if (caseType == "group") {
+                sp1.onclick = function () {
+                    runGroup(icase.scenerioName)
+                };
+                td2.appendChild(sp1);
+                let sp2 = document.createElement("span");
+                sp2.className = "oi oi-cog teemo-action";
+                sp2.onclick = function () {
+                    modify(icase.scenerioName, 'group')
+                };
+            } else {
+                sp1.onclick = function () {
+                    runScenerio(scenerio.scenerioName)
+                };
+                td2.appendChild(sp1);
+                let sp2 = document.createElement("span");
+                sp2.className = "oi oi-cog teemo-action";
+                sp2.onclick = function () {
+                    modify(scenerio.scenerioName, 'scenerio')
+                };
+                td2.appendChild(sp2);
+            }
             tr.appendChild(td2);
             document.getElementById("case-container").appendChild(tr)
         }
-    })
+    }
+}
+
 
 document.getElementById("manageGroups").onclick = function () {
-    teemoPost('http://localhost:6385/group.manage', {}).then(result => {
-        console.log(result)
+    caseType = "group";
+    teemoPost('http://localhost:6385/group.manage').then(result => {
+        cases = result.groups;
         document.getElementById("case-container").innerHTML = "";
-        for (let group of result.groups) {
+        for (let group of cases) {
             let tr = document.createElement("tr");
             tr.className = "text-left";
             let td1 = document.createElement("td");
@@ -97,11 +157,15 @@ document.getElementById("manageGroups").onclick = function () {
             td2.className = 'text-center';
             let sp1 = document.createElement("span");
             sp1.className = "oi oi-timer teemo-action";
-            sp1.onclick = function () { runGroup(group.scenerioName)};
+            sp1.onclick = function () {
+                runGroup(group.scenerioName)
+            };
             td2.appendChild(sp1);
             let sp2 = document.createElement("span");
             sp2.className = "oi oi-cog teemo-action";
-            sp2.onclick = function () { modify(group.scenerioName, 'group')};
+            sp2.onclick = function () {
+                modify(group.scenerioName, 'group')
+            };
             td2.appendChild(sp2);
             tr.appendChild(td2);
             document.getElementById("case-container").appendChild(tr)
@@ -109,23 +173,75 @@ document.getElementById("manageGroups").onclick = function () {
     })
 }
 
+document.getElementById("run-all-silence").onclick = function () {
+    if (caseType == "scenerio") {
+        teemoPost('http://localhost:6385/group.run', {
+            scenerioName: search,
+            runAll: true,
+            silence: true
+        }).then(result => {
+            alert(`success append test task, please wait!`)
+        })
+    } else {
+        teemoPost('http://localhost:6385/group.run', {
+            scenerioName: search,
+            runAll: true,
+            silence: true
+        }).then(result => {
+            alert(`success append test task, please wait!`)
+        })
+    }
+}
+
+document.getElementById("run-all-alert").onclick = function () {
+    if (caseType == "scenerio") {
+        teemoPost('http://localhost:6385/group.run', {
+            scenerioName: search,
+            runAll: true,
+            silence: false
+        }).then(result => {
+            alert(`success append test task, please wait!`)
+        })
+    } else {
+        teemoPost('http://localhost:6385/group.run', {
+            scenerioName: search,
+            runAll: true,
+            silence: false
+        }).then(result => {
+            alert(`success append test task, please wait!`)
+        })
+    }
+}
+
+
+
+
 function runGroup(scenerioName) {
-    teemoPost('http://localhost:6385/group.run', {scenerioName: scenerioName}).then(result => {
-        
+    teemoPost('http://localhost:6385/group.run', {
+        scenerioName: scenerioName
+    }).then(result => {
+        alert(`success append test task, please wait!`)
     })
 }
 
 function runScenerio(scenerioName) {
-    teemoPost('http://localhost:6385/scenerio.run', {scenerioName: scenerioName}).then(result => {
-        
+    teemoPost('http://localhost:6385/scenerio.run', {
+        scenerioName: scenerioName
+    }).then(result => {
+        alert(`success append test task, please wait!`)
     })
 }
 
-document.getElementById("manageScenerios").onclick =  function () {
-    teemoPost('http://localhost:6385/scenerio.manage', {}).then(result => {
+document.getElementById("manageScenerios").onclick = function () {
+    caseType = "scenerio";
+    teemoPost('http://localhost:6385/scenerio.manage').then(result => {
+        cases = result.scenerios;
         console.log(result)
+        if (result.scenerios.length > 0) {
+            return;
+        }
         document.getElementById("case-container").innerHTML = "";
-        for (let scenerio of result.scenerios) {
+        for (let scenerio of cases) {
             let tr = document.createElement("tr");
             tr.className = "text-left";
             let td1 = document.createElement("td");
@@ -136,11 +252,15 @@ document.getElementById("manageScenerios").onclick =  function () {
             td2.className = 'text-center';
             let sp1 = document.createElement("span");
             sp1.className = "oi oi-timer teemo-action";
-            sp1.onclick = function () { runScenerio(scenerio.scenerioName)};
+            sp1.onclick = function () {
+                runScenerio(scenerio.scenerioName)
+            };
             td2.appendChild(sp1);
             let sp2 = document.createElement("span");
             sp2.className = "oi oi-cog teemo-action";
-            sp2.onclick = function () { modify(scenerio.scenerioName, 'scenerio')};
+            sp2.onclick = function () {
+                modify(scenerio.scenerioName, 'scenerio')
+            };
             td2.appendChild(sp2);
             tr.appendChild(td2);
             document.getElementById("case-container").appendChild(tr)
@@ -149,13 +269,15 @@ document.getElementById("manageScenerios").onclick =  function () {
 }
 
 
-function modify (scenerioName, type) {
+function modify(scenerioName, type) {
     console.log(`modify ${scenerioName} ${type}`)
     chrome.tabs.query({
         active: true,
         currentWindow: true
     }, function (tabs) {
-        teemoPost(`http://localhost:6385/${type}.get`, {scenerioName}).then(result => {
+        teemoPost(`http://localhost:6385/${type}.get`, {
+            scenerioName
+        }).then(result => {
             chrome.tabs.executeScript(tabs[0].id, {
                 code: `window.location.href="${result.steps[0].url}";`
                 // code: `window.open("${result.steps[0].url}");`
@@ -194,6 +316,6 @@ function modify (scenerioName, type) {
                     });
             }, 2000)
 
-        })       
+        })
     });
 };
