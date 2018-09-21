@@ -147,37 +147,7 @@ document.getElementById("teemo-case-search").oninput = function (event) {
 }
 
 
-document.getElementById("manageGroups").onclick = function () {
-    caseType = "group";
-    teemoPost('http://localhost:6385/group.manage').then(result => {
-        cases = result.groups;
-        document.getElementById("case-container").innerHTML = "";
-        for (let group of cases) {
-            let tr = document.createElement("tr");
-            tr.className = "text-left";
-            let td1 = document.createElement("td");
-            td1.className = 'text-left';
-            td1.innerText = group.scenerioName;
-            tr.appendChild(td1);
-            let td2 = document.createElement("td");
-            td2.className = 'text-center';
-            let sp1 = document.createElement("span");
-            sp1.className = "oi oi-timer teemo-action";
-            sp1.onclick = function () {
-                runGroup(group.scenerioName)
-            };
-            td2.appendChild(sp1);
-            let sp2 = document.createElement("span");
-            sp2.className = "oi oi-cog teemo-action";
-            sp2.onclick = function () {
-                modify(group.scenerioName, 'group')
-            };
-            td2.appendChild(sp2);
-            tr.appendChild(td2);
-            document.getElementById("case-container").appendChild(tr)
-        }
-    })
-}
+
 
 document.getElementById("run-all-silence").onclick = function () {
     if (caseType == "scenerio") {
@@ -242,14 +212,44 @@ function runScenerio(scenerioName) {
     })
 }
 
+document.getElementById("manageGroups").onclick = function () {
+    caseType = "group";
+    teemoPost('http://localhost:6385/group.manage').then(result => {
+        cases = result.groups;
+        console.log(result)
+        document.getElementById("case-container").innerHTML = "";
+        for (let group of cases) {
+            let tr = document.createElement("tr");
+            tr.className = "text-left";
+            let td1 = document.createElement("td");
+            td1.className = 'text-left';
+            td1.innerText = group.scenerioName;
+            tr.appendChild(td1);
+            let td2 = document.createElement("td");
+            td2.className = 'text-center';
+            let sp1 = document.createElement("span");
+            sp1.className = "oi oi-timer teemo-action";
+            sp1.onclick = function () {
+                runGroup(group.scenerioName)
+            };
+            td2.appendChild(sp1);
+            let sp2 = document.createElement("span");
+            sp2.className = "oi oi-cog teemo-action";
+            sp2.onclick = function () {
+                modify(group.scenerioName, 'group')
+            };
+            td2.appendChild(sp2);
+            tr.appendChild(td2);
+            document.getElementById("case-container").appendChild(tr)
+        }
+    })
+}
+
 document.getElementById("manageScenerios").onclick = function () {
     caseType = "scenerio";
     teemoPost('http://localhost:6385/scenerio.manage').then(result => {
         cases = result.scenerios;
         console.log(result)
-        if (result.scenerios.length > 0) {
-            return;
-        }
         document.getElementById("case-container").innerHTML = "";
         for (let scenerio of cases) {
             let tr = document.createElement("tr");
