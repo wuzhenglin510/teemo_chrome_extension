@@ -296,7 +296,7 @@ function modify(scenerioName, type) {
                 chrome.tabs.executeScript(
                     tabs[0].id, {
                         code: `
-                           var teemoUpdateEnv = document.createElement('div');
+                           var teemoUpdateEnv = document.createElement('span');
                            teemoUpdateEnv.style="display:none";
                            teemoUpdateEnv.id = "teemoUpdateEnv";
                            teemoUpdateEnv.innerText = '${scenerioName}';
