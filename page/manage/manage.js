@@ -151,7 +151,7 @@ document.getElementById("teemo-case-search").oninput = function (event) {
 
 document.getElementById("run-all-silence").onclick = function () {
     if (caseType == "scenerio") {
-        teemoPost('http://localhost:6385/group.run', {
+        teemoPost('http://localhost:6385/scenerio.run', {
             scenerioName: search,
             browser: browser,
             runAll: true,
@@ -173,8 +173,9 @@ document.getElementById("run-all-silence").onclick = function () {
 
 document.getElementById("run-all-alert").onclick = function () {
     if (caseType == "scenerio") {
-        teemoPost('http://localhost:6385/group.run', {
+        teemoPost('http://localhost:6385/scenerio.run', {
             scenerioName: search,
+            browser: browser,
             runAll: true,
             silence: false
         }).then(result => {
@@ -183,6 +184,7 @@ document.getElementById("run-all-alert").onclick = function () {
     } else {
         teemoPost('http://localhost:6385/group.run', {
             scenerioName: search,
+            browser: browser,
             runAll: true,
             silence: false
         }).then(result => {
