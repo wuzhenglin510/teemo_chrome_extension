@@ -1,6 +1,6 @@
 {
   "name": "Teemo",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "smart ui test recorder and manager",
   "background": {
     "scripts": ["js/background.js"],
