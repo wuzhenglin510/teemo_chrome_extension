@@ -199,7 +199,8 @@ document.getElementById("run-all-alert").onclick = function () {
 function runGroup(scenerioName) {
     teemoPost('http://localhost:6385/group.run', {
         scenerioName: scenerioName,
-        browser: browser
+        browser: browser,
+        closeBrowser: document.getElementById("closeBrowser").checked
     }).then(result => {
         alert(`success append test task, please wait!`)
     })
@@ -208,7 +209,8 @@ function runGroup(scenerioName) {
 function runScenerio(scenerioName) {
     teemoPost('http://localhost:6385/scenerio.run', {
         scenerioName: scenerioName,
-        browser: browser
+        browser: browser,
+        closeBrowser: document.getElementById("closeBrowser").checked
     }).then(result => {
         alert(`success append test task, please wait!`)
     })

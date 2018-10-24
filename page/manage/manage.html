@@ -13,44 +13,48 @@
 
 <body>
     <div class="form">
-      
+
         <ul class="tab-group">
-          <li id='manageGroups' class="tab active"><a href="#">Group Manage</a></li>
-          <li id="manageScenerios" class="tab"><a href="#">Scenerio Manage</a></li>
+            <li id='manageGroups' class="tab active"><a href="#">Group Manage</a></li>
+            <li id="manageScenerios" class="tab"><a href="#">Scenerio Manage</a></li>
         </ul>
         <div style="text-align: center">
-            <h3 style="color: white">Welcome To Scenerio Center</h1>
-                <select id="teemo-choose-browser" class="teemo-choose-browser">
-                    <option value="Chrome">Chrome</option>
-                    <option value="Firefox">Firefox</option>
-                    <option value="360">360</option>
-                    <option value="Edge">Edge</option>
-                    <option value="IE">IE</option>
-                    <option value="Safari">Safari</option>
-                </select>
+            <div style="position: absolute;width: 100%;right: -476px;top: 46px;"> 
+                <input type="checkbox" id="closeBrowser" name="subscribe" value="closeBrowser" style="width: 13px;height: 13px;display: inline-block;float:left;">
+                <label for="closeBrowser" style="font-size: 13px;display: inline-block;float:left;position: absolute;top: -10px;">执行后关闭浏览器</label>
+            </div>
+            <h3 style="color: white">Welcome To Scenerio Center</h3>
+            <select id="teemo-choose-browser" class="teemo-choose-browser">
+                <option value="Chrome">Chrome</option>
+                <option value="Firefox">Firefox</option>
+                <option value="360">360</option>
+                <option value="Edge">Edge</option>
+                <option value="IE">IE</option>
+                <option value="Safari">Safari</option>
+            </select>
         </div>
-        
-        
+
+
         <div id="content" class="tab-content">
-          
+
             <table id="table-content" class="table-fill">
                 <thead>
-                <tr>
-                <th class="text-left">Description
-                    <span id="run-all-silence" class="oi oi-moon run-all"></span>
-                    <span id="run-all-alert" class="oi oi-bullhorn run-all"></span>
-                    <input id="teemo-case-search" type="text" class="teemo-case-search" value="" />
-                </th>
-                 <th class="text-left">Operation</th>
-                </tr>
+                    <tr>
+                        <th class="text-left">Description
+                            <span id="run-all-silence" class="oi oi-moon run-all"></span>
+                            <span id="run-all-alert" class="oi oi-bullhorn run-all"></span>
+                            <input id="teemo-case-search" type="text" class="teemo-case-search" value="" />
+                        </th>
+                        <th class="text-left">Operation</th>
+                    </tr>
                 </thead>
                 <tbody id="case-container" class="table-hover">
-                    
+
                 </tbody>
-                </table>
+            </table>
         </div>
-        
-  </div> 
+
+    </div>
 
     <script src="../../thirdpart/bootstrap/jquery-3.3.1.slim.min.js"></script>
     <script src="../../thirdpart/bootstrap/popper.min.js"></script>
